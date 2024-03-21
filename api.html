@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Facts</title>
+    <style>
+        
+        body {
+            background-color: #5d4e4b; 
+            background-image: url("https://en.bcdn.biz/images/emails_source/f7aee20b-8a8a-4500-b3b7-8c5d7e625852.jpg"); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        
+        #fetchButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #b8a5a500; 
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #aa8c8c00; 
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2; 
+        }
+
+        tr:hover {
+            background-color: hwb(0 0% 100%);
+        }
+    </style>
+</head>
+<body>
+    <h1>Cat Facts</h1>
+    <button id="fetchButton">Fetch Cat Facts</button>
+    <table id="catFactsTable">
+        <thead>
+            <tr>
+                <th>Fact ID</th>
+                <th>Fact</th>
+            </tr>
+        </thead>
+        <tbody id="catFactsBody">
+            
+        </tbody>
+    </table>
+    <img id="catImage" src="placeholder.jpg" alt="Cat Image">
+    <script>
+        document.getElementById('fetchButton').addEventListener('click', fetchCatFacts);
+
+        function fetchCatFacts() {
+            fetch('https://brianobruno.github.io/cats.json')
+                .then(response => response.json())
+                .then(data => {
+                    
+                    data.facts.sort((a, b) => a.factId - b.factId);
+
+                    
+                    const tableBody = document.getElementById('catFactsBody');
+                    tableBody.innerHTML = '';
+                    data.facts.forEach(fact => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td>${fact.factId}</td><td>${fact.fact}</td>`;
+                        tableBody.appendChild(row);
+                    });
+
+                   
+                    const catImage = document.getElementById('catImage');
+                    catImage.src = "https://wallup.net/wp-content/uploads/2018/10/06/708149-kittens-kitten-cat-cats-baby-cute-s.jpg"; 
+                })
+                .catch(error => console.error('Error fetching cat facts:', error));
+        }
+    </script>
+</body>
+</html>
